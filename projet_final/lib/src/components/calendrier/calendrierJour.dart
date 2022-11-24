@@ -5,12 +5,12 @@ import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 
 // create a calendar widget
-class Calendrier extends StatefulWidget {
+class CalendrierJour extends StatefulWidget {
   @override
-  _CalendrierState createState() => _CalendrierState();
+  _CalendrierJourState createState() => _CalendrierJourState();
 }
 
-class _CalendrierState extends State<Calendrier> {
+class _CalendrierJourState extends State<CalendrierJour> {
   @override
 Widget build(BuildContext context) {
   return MaterialApp(
@@ -24,11 +24,10 @@ Widget build(BuildContext context) {
                 ],
                 locale: const Locale('fr'),
                 home: Scaffold(
-                    body: SfCalendar(
-                    view: CalendarView.month,
-                    monthViewSettings: const MonthViewSettings(showAgenda: true),
-
-                ),
+                     body: SfCalendar(
+        view: CalendarView.week,
+        timeSlotViewSettings: const TimeSlotViewSettings(numberOfDaysInView: 3),
+      )
          ),
      );
 }
