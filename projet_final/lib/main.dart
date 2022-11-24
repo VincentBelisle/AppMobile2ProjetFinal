@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:projet_final/src/components/calendrier/calendrier.dart';
+import 'package:projet_final/src/components/calendrier/calendrierJour.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -31,10 +32,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   // create a calendar widget
   final List<Widget> _widgetOptions = <Widget>[
-    const Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
+    CalendrierJour(),
     Calendrier(),
     const Center(
       child: Icon(Icons.check, color: Colors.green, size: 60),
