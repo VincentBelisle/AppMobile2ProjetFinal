@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:projet_final/src/components/calendrier/calendrier.dart';
 import 'package:projet_final/src/components/calendrier/calendrierJour.dart';
+import 'package:projet_final/src/components/cardActivite.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -9,6 +10,8 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+
+
   const MyApp({super.key});
 
   @override
@@ -21,7 +24,6 @@ class MyApp extends StatelessWidget {
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({super.key});
-
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
@@ -34,9 +36,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final List<Widget> _widgetOptions = <Widget>[
     CalendrierJour(),
     Calendrier(),
-    const Center(
-      child: Icon(Icons.check, color: Colors.green, size: 60),
-    ),
+    CardActivite(description: 'Vélo stationnaire',text: 'Vélo', icon: const Icon(Icons.directions_bike),)
+
+    
   ];
 
   void _onItemTapped(int index) {
