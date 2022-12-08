@@ -3,41 +3,69 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:projet_final/src/components/calendrier/calendrier.dart';
 import 'package:projet_final/src/components/calendrier/calendrierJour.dart';
 import 'package:projet_final/src/components/cardActivite.dart';
+import 'package:projet_final/src/data/entities/activity_entity.dart';
+import 'package:projet_final/src/data/services/activity_services.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+
 
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
 
 
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       home: MyStatefulWidget(),
     );
   }
 }
 
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({super.key});
+
+  final dbHelper = ActivityService();
+  // list of activities
+
+  List<ActivityEntity> activites = [];
+
+
+  MyStatefulWidget({super.key});
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  
   int _selectedIndex = 0;
+   
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   // create a calendar widget
   final List<Widget> _widgetOptions = <Widget>[
     CalendrierJour(),
     Calendrier(),
-    CardActivite(description: 'Vélo stationnaire',text: 'Vélo', icon: const Icon(Icons.directions_bike),)
+    // FutureBuilder activite
+    FutureBuilder(
+      future: ActivityService().activities(),
+      builder: (BuildContext context, AsyncSnapshot<List<ActivityEntity>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return CardActivite(nom :snapshot.data![index].nom, description : snapshot.data![index].description, icon: Icon(Icons.ac_unit));
+            },
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    ),
 
+    
     
   ];
 
@@ -45,6 +73,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     setState(() {
       _selectedIndex = index;
     });
+
   }
 
   @override
