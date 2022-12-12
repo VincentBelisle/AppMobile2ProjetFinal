@@ -40,6 +40,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   syncfusion_localizations: ^20.3.57
+  sqflite: ^2.2.0+3
 
 dev_dependencies:
   flutter_test:

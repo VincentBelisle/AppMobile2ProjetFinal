@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 
 class CardActivite extends StatefulWidget {
-  CardActivite({super.key, required this.text, required this.description, required this.icon});
+  CardActivite({super.key, required this.nom, required this.description, required this.icon});
 
-  String text;
+  String nom;
   String description;
   Icon icon;
 
@@ -24,7 +24,7 @@ class _CardActiviteState extends State<CardActivite> {
         children: <Widget>[
            ListTile(
             leading: widget.icon,
-            title: Text(widget.text),
+            title: Text(widget.nom),
             subtitle: Text(widget.description),
           ),
           Row(
