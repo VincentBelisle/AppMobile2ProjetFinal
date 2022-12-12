@@ -134,9 +134,6 @@ class _FormAjoutState extends State<FormAjout> {
 
         widget.dbHelper.insertActivity(activity);
 
-
-        print(widget.activities);
-
         
 
 

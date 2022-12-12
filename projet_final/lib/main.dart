@@ -6,6 +6,7 @@ import 'package:projet_final/src/components/cardActivite.dart';
 import 'package:projet_final/src/data/entities/activity_entity.dart';
 import 'package:projet_final/src/data/services/activity_services.dart';
 import 'package:projet_final/src/screens/formAjout.dart';
+import 'package:projet_final/src/screens/listeActivite.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -28,19 +29,20 @@ class MyApp extends StatelessWidget {
 }
 
 class MyStatefulWidget extends StatefulWidget {
+    MyStatefulWidget({super.key});
 
   final dbHelper = ActivityService();
-
   // List of activities to display
   List<ActivityEntity> activities = [];
 
-  MyStatefulWidget({super.key});
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
+
   
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -48,22 +50,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final List<Widget> _widgetOptions = <Widget>[
     CalendrierJour(),
     Calendrier(),
+    HighscoreScreen()
     // Get the list of activities from the database
-    FutureBuilder<List<ActivityEntity>>(
-      future: ActivityService().activities(),
-      builder: (BuildContext context, AsyncSnapshot<List<ActivityEntity>> snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (BuildContext context, int index) {
-              return CardActivite(nom: snapshot.data![index].nom, description: snapshot.data![index].description, date: snapshot.data![index].date);
-            },
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    ),
+    
    
 
   ];
