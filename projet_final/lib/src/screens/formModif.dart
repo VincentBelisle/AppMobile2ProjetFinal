@@ -3,6 +3,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:projet_final/src/data/services/activity_services.dart';
 
+
 import '../data/entities/activity_entity.dart';
 
 class FormModifier extends StatefulWidget {
@@ -202,13 +203,18 @@ class _FormModifierState extends State<FormModifier> {
 
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Activité modifiée')));
+
+        // Animation de retour
+        
         // pop the page
         Navigator.pop(context);
       }
-    }
+      
 
-    formWidget.add(ElevatedButton(
+    }formWidget.add(ElevatedButton(
         child: const Text('Modifier l\'activité'), onPressed: onPressedSubmit));
+
+    
 
     return formWidget;
   }

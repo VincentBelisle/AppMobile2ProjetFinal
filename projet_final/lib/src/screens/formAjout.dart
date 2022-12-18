@@ -3,6 +3,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:projet_final/src/data/services/activity_services.dart';
 
+
 import '../data/entities/activity_entity.dart';
 
 class FormAjout extends StatefulWidget {
@@ -180,14 +181,21 @@ class _FormAjoutState extends State<FormAjout> {
 
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Activité ajoutée')));
-        // pop the page
+
+
         Navigator.pop(context);
+        
+
       }
     }
 
     formWidget.add(ElevatedButton(
-        child: const Text('Ajouter l\'activité'), onPressed: onPressedSubmit));
+        onPressed: onPressedSubmit,
+        child: const Text('Ajouter l\'activité')));
 
     return formWidget;
   }
 }
+
+class RefreshActivitiesNotification extends Notification {}
+

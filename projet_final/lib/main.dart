@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({super.key});
 
-  final dbHelper = ActivityService();
   // List of activities to display
 
   @override
@@ -44,26 +43,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // this method will be called when the widget is created
   @override
   void initState() {
-    // get the list of activities
-    getActivities();
 
     super.initState();
   }
 
-   getActivities() async {
-    List<ActivityEntity> activities = await widget.dbHelper.activities();
-    setState(() {
-      this.activities = activities;
-    });
-
-    return activities;
-    
-  }
+  
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   // create a calendar widget
   final List<Widget> _widgetOptions = <Widget>[
+    
     CalendrierJour(),
     Calendrier(),
     HighscoreScreen()
@@ -77,7 +67,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return 
+    Scaffold(
       appBar: AppBar(
         // Set the AppBar title using the label of navbar item.
         title: const Text("Agenda"),
@@ -142,3 +133,4 @@ class AjoutActivite extends StatelessWidget {
     );
   }
 }
+
