@@ -18,7 +18,7 @@ class ActivityService {
       join(await getDatabasesPath(), databasePath),
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE IF NOT EXISTS $tableActivityName(id INTEGER PRIMARY KEY,nom TEXT, description TEXT, date TEXT)",
+          "CREATE TABLE IF NOT EXISTS $tableActivityName(id INTEGER PRIMARY KEY,nom TEXT, description TEXT, heureDebut TEXT, heureFin TEXT)",
         );
       },
       version: 2,
@@ -41,13 +41,17 @@ class ActivityService {
   Future<List<ActivityEntity>> activities() async {
     final Database db = await getDatabaseInstance();
 
-    final List<Map<String, dynamic>> maps = await db.query(tableActivityName);
+    // get the list of activities from the database and order them by date
+    final List<Map<String, dynamic>> maps = await db.query(tableActivityName, orderBy: "heureDebut");
 
     return List.generate(maps.length, (i) {
+
       return ActivityEntity.FromMap(maps[i]);
     });
   }
-
+  
+ 
+  
   Future<void> deleteActivity(int id) async {
     final db = await getDatabaseInstance();
 
