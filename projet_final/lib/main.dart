@@ -10,15 +10,14 @@ import 'package:projet_final/src/screens/listeActivite.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:intl/intl.dart';
 
-
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +28,39 @@ class MyApp extends StatelessWidget {
 }
 
 class MyStatefulWidget extends StatefulWidget {
-    MyStatefulWidget({super.key});
+  MyStatefulWidget({super.key});
 
   final dbHelper = ActivityService();
   // List of activities to display
-  List<ActivityEntity> activities = [];
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-  
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
 
-  
+  List<ActivityEntity> activities = [];
+
+  // this method will be called when the widget is created
+  @override
+  void initState() {
+    // get the list of activities
+    getActivities();
+
+    super.initState();
+  }
+
+   getActivities() async {
+    List<ActivityEntity> activities = await widget.dbHelper.activities();
+    setState(() {
+      this.activities = activities;
+    });
+
+    return activities;
+    
+  }
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   // create a calendar widget
@@ -51,10 +68,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     CalendrierJour(),
     Calendrier(),
     HighscoreScreen()
-    // Get the list of activities from the database
-    
-   
-
   ];
 
   void _onItemTapped(int index) {
@@ -77,8 +90,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AjoutActivite(widget.activities)
-                ),
+                MaterialPageRoute(
+                    builder: (context) => AjoutActivite(activities)),
               );
             },
           ),
@@ -109,16 +122,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       ),
     );
   }
-  
 }
 
 class AjoutActivite extends StatelessWidget {
-
   // List of activities to display
   List<ActivityEntity> activities = [];
 
   AjoutActivite(List activities, {super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -126,12 +136,10 @@ class AjoutActivite extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Ajout activité'),
       ),
-       body: Container(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: FormAjout(activities),
-        ),
+      body: Container(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: FormAjout(activities),
+      ),
     );
   }
 }
-    
-

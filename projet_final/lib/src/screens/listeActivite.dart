@@ -40,6 +40,7 @@ class _HighscoreScreenState extends State<HighscoreScreen> {
                                             builder: (context, snapshot) {
                                               if (snapshot.hasData) {
                                                 widget.activities = snapshot.data!;
+                                                print(widget.activities);
 
                                                 return ListView.separated(
                                                   itemCount:
@@ -90,7 +91,7 @@ class _HighscoreScreenState extends State<HighscoreScreen> {
                                                           subtitle: Text(
                                                               widget.activities[
                                                                       index]
-                                                                  .description),
+                                                                  .heureDebut.toString()),
                                                         ),
                                                       ),
                                                     );
