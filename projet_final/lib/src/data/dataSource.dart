@@ -8,6 +8,9 @@ import 'package:projet_final/src/data/entities/activity_entity.dart';
 List<Meeting> getDataSource(List<ActivityEntity> activities) {
   late List<Meeting> meetings = <Meeting>[];
 
+  if (activities.isEmpty) {
+    return meetings;
+  }
 
   for (var activity in activities) {
     meetings.add(Meeting(activity.nom, activity.description, activity.heureDebut, activity.heureFin, Colors.blue, false));

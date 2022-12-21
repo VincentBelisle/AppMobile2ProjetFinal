@@ -3,7 +3,6 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:projet_final/src/data/services/activity_services.dart';
 
-
 import '../data/entities/activity_entity.dart';
 
 class FormModifier extends StatefulWidget {
@@ -15,12 +14,9 @@ class FormModifier extends StatefulWidget {
   final ActivityEntity activite;
 
   final dbHelper = ActivityService();
-
 }
 
 class _FormModifierState extends State<FormModifier> {
-
-   // Nom de l'activité
 
   String _nom = '';
 
@@ -29,23 +25,20 @@ class _FormModifierState extends State<FormModifier> {
   TextEditingController _dateFinController = TextEditingController();
   DateTime _dateDebut = DateTime.now();
   DateTime _dateFin = DateTime.now();
-  
 
   @override
   void initState() {
     super.initState();
     _nom = widget.activite.nom;
     _description = widget.activite.description;
-    _dateDebutController.text = DateFormat('dd/MM/yyyy HH:mm').format(widget.activite.heureDebut);
-    _dateFinController.text = DateFormat('dd/MM/yyyy HH:mm').format(widget.activite.heureFin);
+    _dateDebutController.text =
+        DateFormat('dd/MM/yyyy HH:mm').format(widget.activite.heureDebut);
+    _dateFinController.text =
+        DateFormat('dd/MM/yyyy HH:mm').format(widget.activite.heureFin);
   }
 
-  
   final _formKey = GlobalKey<FormState>();
   final _passKey = GlobalKey<FormFieldState>();
-
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +54,6 @@ class _FormModifierState extends State<FormModifier> {
     List<Widget> formWidget = [];
 
     formWidget.add(TextFormField(
-
       initialValue: _nom,
       decoration: const InputDecoration(
           labelText: 'Nom activité', hintText: 'Nom de l\'activité'),
@@ -80,6 +72,7 @@ class _FormModifierState extends State<FormModifier> {
     ));
 
     formWidget.add(TextFormField(
+
       initialValue: _description,
       decoration: const InputDecoration(
           labelText: 'Description', hintText: 'Description'),
@@ -117,16 +110,15 @@ class _FormModifierState extends State<FormModifier> {
           print(
               pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
 
-              // Datetime format
-          String formattedDate = DateFormat('yyyy-MM-dd').add_jm().format(pickedDate);
-
+          // Datetime format
+          String formattedDate =
+              DateFormat('yyyy-MM-dd').add_jm().format(pickedDate);
 
           print(
               formattedDate); //formatted date output using intl package =>  2021-03-16
           setState(() {
             _dateDebutController.text = formattedDate;
             _dateDebut = pickedDate;
-
           });
         } else {}
       },
@@ -164,10 +156,11 @@ class _FormModifierState extends State<FormModifier> {
           print(
               pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
 
-          String formattedDate = DateFormat('yyyy-MM-dd').add_jm().format(pickedDate);
+          String formattedDate =
+              DateFormat('yyyy-MM-dd').add_jm().format(pickedDate);
 
           _dateFin = pickedDate;
-         //formatted date output using intl package =>  2021-03-16
+          //formatted date output using intl package =>  2021-03-16
           setState(() {
             _dateFinController.text = formattedDate;
           });
@@ -188,33 +181,40 @@ class _FormModifierState extends State<FormModifier> {
     ));
 
     void onPressedSubmit() {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState?.save();
 
-        ActivityEntity activity = ActivityEntity(
+
+      // cacher le clavier
+      FocusScope.of(context).requestFocus(FocusNode());
+
+      // attendre que le clavier soit caché
+      Future.delayed(const Duration(milliseconds: 100), () {
+
+        if (_formKey.currentState!.validate()) {
+          _formKey.currentState?.save();
+
+          ActivityEntity activity = ActivityEntity(
             widget.activite.id,
             _nom,
             _description,
             _dateDebut,
             _dateFin,
-            );
+          );
 
-        widget.dbHelper.updateActivity(activity);
+          widget.dbHelper.updateActivity(activity);
 
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Activité modifiée')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('Activité modifiée')));
 
-        // Animation de retour
-        
-        // pop the page
-        Navigator.pop(context);
-      }
-      
+          Navigator.pop(context,activity);
+        }
+      });
 
-    }formWidget.add(ElevatedButton(
-        child: const Text('Modifier l\'activité'), onPressed: onPressedSubmit));
 
-    
+    }
+
+    formWidget.add(ElevatedButton(
+        onPressed: onPressedSubmit,
+        child: const Text('Modifier l\'activité')));
 
     return formWidget;
   }

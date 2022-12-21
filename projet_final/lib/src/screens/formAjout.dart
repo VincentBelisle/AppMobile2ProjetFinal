@@ -7,7 +7,7 @@ import 'package:projet_final/src/data/services/activity_services.dart';
 import '../data/entities/activity_entity.dart';
 
 class FormAjout extends StatefulWidget {
-  FormAjout(List activities, {Key? key}) : super(key: key);
+  FormAjout({Key? key}) : super(key: key);
 
   @override
   _FormAjoutState createState() => _FormAjoutState();
@@ -75,7 +75,6 @@ class _FormAjoutState extends State<FormAjout> {
       },
     ));
 
-    // Add a date picker
     formWidget.add(TextFormField(
       controller: _dateDebutController,
       decoration: const InputDecoration(
@@ -93,7 +92,7 @@ class _FormAjoutState extends State<FormAjout> {
 
         if (pickedDate != null) {
           print(
-              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+              pickedDate); 
 
               // Datetime format
           String formattedDate = DateFormat('yyyy-MM-dd').add_jm().format(pickedDate);
@@ -183,8 +182,8 @@ class _FormAjoutState extends State<FormAjout> {
             .showSnackBar(const SnackBar(content: Text('Activité ajoutée')));
 
 
-        Navigator.pop(context);
-        
+        // Pop la page et retourne l'activité
+        Navigator.pop(context, activity);        
 
       }
     }
@@ -196,6 +195,4 @@ class _FormAjoutState extends State<FormAjout> {
     return formWidget;
   }
 }
-
-class RefreshActivitiesNotification extends Notification {}
 

@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({super.key});
 
-  // List of activities to display
+ 
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
@@ -38,26 +38,32 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
 
+   // List of activities to display
   List<ActivityEntity> activities = [];
+
+  final dbHelper = ActivityService();
 
   // this method will be called when the widget is created
   @override
   void initState() {
-
+    getActivities();
     super.initState();
   }
 
-  
+  getActivities() async {
+    List<ActivityEntity> activities = await dbHelper.activities();
+    setState(() {
+      this.activities = activities;
+      print(activities);
+    });
+
+
+    return activities;
+   
+  }
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  // create a calendar widget
-  final List<Widget> _widgetOptions = <Widget>[
-    
-    CalendrierJour(),
-    Calendrier(),
-    HighscoreScreen()
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -67,6 +73,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+  final List<Widget> widgetOptions = <Widget>[    CalendrierJour(),    Calendrier(),    ListeActivite(activities: activities)  ];
+    
     return 
     Scaffold(
       appBar: AppBar(
@@ -74,6 +83,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         title: const Text("Agenda"),
         // add a button to add an activity
         actions: <Widget>[
+          // si sur la page de la liste des activités, on affiche pas le bouton
+          if (_selectedIndex == 2)
           IconButton(
             icon: const Icon(Icons.add),
             tooltip: 'Ajouter un activité',
@@ -81,14 +92,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AjoutActivite(activities)),
-              );
+                    builder: (context) => AjoutActivite()
+                    // add the activitiy to the list
+                    ),
+              ).then(
+                // ajouter l'activité à la liste
+                (value) => setState(() {
+                  activities.add(value);
+                }),
+              );     
             },
           ),
         ],
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -102,7 +120,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
           BottomNavigationBarItem(
             // add todo icon
-            icon: Icon(Icons.location_on),
+            icon: Icon(Icons.check_box),
             label: 'À faire',
           ),
         ],
@@ -115,10 +133,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 class AjoutActivite extends StatelessWidget {
-  // List of activities to display
-  List<ActivityEntity> activities = [];
 
-  AjoutActivite(List activities, {super.key});
+  AjoutActivite({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +144,7 @@ class AjoutActivite extends StatelessWidget {
       ),
       body: Container(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child: FormAjout(activities),
+        child: FormAjout(),
       ),
     );
   }

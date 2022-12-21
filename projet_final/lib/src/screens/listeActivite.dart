@@ -4,20 +4,17 @@ import 'package:projet_final/src/screens/formModif.dart';
 import '../data/entities/activity_entity.dart';
 import '../data/services/activity_services.dart';
 
-/// Displays the various settings that can be customized by the user.
-///
-class HighscoreScreen extends StatefulWidget {
-  HighscoreScreen({super.key});
-
+class ListeActivite extends StatefulWidget {
   final dbHelper = ActivityService();
 
   List<ActivityEntity> activities = [];
+  ListeActivite({super.key, required this.activities});
 
   @override
-  _HighscoreScreenState createState() => _HighscoreScreenState();
+  _ListeActiviteState createState() => _ListeActiviteState();
 }
 
-class _HighscoreScreenState extends State<HighscoreScreen> {
+class _ListeActiviteState extends State<ListeActivite> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
@@ -27,7 +24,7 @@ class _HighscoreScreenState extends State<HighscoreScreen> {
               height: double.infinity,
               child: Column(children: [
                 const Padding(
-                    padding: EdgeInsets.only(top: 60),
+                    padding: EdgeInsets.only(top: 20),
                     child: Text(
                       'Activités',
                       style: TextStyle(
@@ -36,12 +33,12 @@ class _HighscoreScreenState extends State<HighscoreScreen> {
                           color: Colors.black),
                     )),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 10),
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
                         SizedBox(
-                          height: 400,
+                          height: 500,
                           child: FutureBuilder(
                               future: widget.dbHelper.activities(),
                               builder: (context, snapshot) {
@@ -76,35 +73,70 @@ class _HighscoreScreenState extends State<HighscoreScreen> {
                                             ),
                                           ),
                                         ),
-                                        child: Card(
-                                          child: ListTile(
-                                            title: Text(
-                                              // afficher la date sans les millisecondes
-                                              "${widget.activities[index].heureDebut.toString().substring(0, 16)} - ${widget.activities[index].nom}",
+                                        child: Stack(
+                                          children: [
+                                            Card(
+                                              child: ListTile(
+                                                title: Text(
+                                                  // afficher la date sans les millisecondes
+                                                  widget.activities[index].nom
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
 
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                                subtitle: Text(widget
+                                                    .activities[index]
+                                                    .description
+                                                    .toString()),
+
+                                                // Ajouter un crayon pour modifier l'activité
+                                                trailing: IconButton(
+                                                  icon: const Icon(Icons.edit),
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ModifierActivite(
+                                                                  widget.activities[
+                                                                      index]),
+                                                        )).then((value) => {
+                                                              setState(() {
+                                                                // faire un appel à la base de données pour mettre à jour la liste des activités
+                                                                widget.dbHelper
+                                                                    .activities()
+                                                                    .then((value) =>
+                                                                        {
+                                                                              widget.activities = value
+
+                                                                        }
+                                                                    );
+
+                                                              })
+                                                            });
+                                                            
+                                                  },
+                                                ),
+                                              ),
                                             ),
+                                            Positioned(
+                                              // afficher l'heure de début de l'activité et l'aligner avec la carte
+                                              left: 3,
+                                              child: Text(
+                                                // afficher l'heure de debut et de fin sans les millisecondes
+                                                "${widget.activities[index].heureDebut.toString()
+                                                    // enlever les millisecondes
+                                                    .substring(0, 16)} - ${widget.activities[index].heureFin.toString().substring(0, 16)}",
 
-                                            subtitle: Text(widget
-                                                .activities[index].description
-                                                .toString()),
-
-                                            // Ajouter un crayon pour modifier l'activité
-                                            trailing: IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ModifierActivite(
-                                                              widget.activities[
-                                                                  index]),
-                                                    ));
-                                              },
+                                                style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       );
                                     },
