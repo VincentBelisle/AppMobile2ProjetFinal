@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:projet_final/src/components/calendrier/calendrier.dart';
 import 'package:projet_final/src/components/calendrier/calendrierJour.dart';
 import 'package:projet_final/src/data/entities/activity_entity.dart';
 import 'package:projet_final/src/data/services/activity_services.dart';
 import 'package:projet_final/src/screens/formAjout.dart';
 import 'package:projet_final/src/screens/listeActivite.dart';
-import 'package:syncfusion_localizations/syncfusion_localizations.dart';
-import 'package:intl/intl.dart';
 
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 void main() => runApp(const MyApp());
 
